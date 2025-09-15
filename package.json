@@ -2,6 +2,6 @@
     "name": "com.julien.jutils",
     "version": "1.0.0",
     "displayName": "JUtils",
-    "unity": "6.0",
+    "unity": "2020.3",
     "description": "A collection of useful utilities for Unity projects."
 }
