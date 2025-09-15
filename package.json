@@ -7,6 +7,6 @@
     "samples": {
         "displayName": "JUtils Utility content",
         "description": "A collection of useful utilities for Unity projects.",
-        "path": "Runtime/"
+        "path": "Samples~/testImport"
     }
 }
