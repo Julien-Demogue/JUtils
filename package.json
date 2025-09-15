@@ -4,9 +4,11 @@
     "displayName": "JUtils",
     "unity": "2020.3",
     "description": "A collection of useful utilities for Unity projects.",
-    "samples": {
-        "displayName": "JUtils Utility content",
-        "description": "A collection of useful utilities for Unity projects.",
-        "path": "Samples~/TestImport"
-    }
+    "samples": [
+        {
+            "displayName": "JUtils Utility content",
+            "description": "A collection of useful utilities for Unity projects.",
+            "path": "Samples~/TestImport"
+        }
+    ]
 }
