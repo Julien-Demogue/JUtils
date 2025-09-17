@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Fades the GameObject's material color between a set of predefined colors.
+/// </summary>
 public class JColorFader : MonoBehaviour
 {
     [SerializeField] Color[] colors;
@@ -37,11 +40,17 @@ public class JColorFader : MonoBehaviour
         objectRenderer.material.color = Color.Lerp(startColor, endColor, t);
     }
 
+    /// <summary>
+    /// Pauses the color fading.
+    /// </summary>
     public void Pause()
     {
         shouldFade = false;
     }
 
+    /// <summary>
+    /// Resumes the color fading.
+    /// </summary>
     public void Resume()
     {
         shouldFade = true;

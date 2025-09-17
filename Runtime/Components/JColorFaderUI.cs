@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Fades the UI element's color between a set of predefined colors.
+/// </summary>
 public class JColorFaderUI : MonoBehaviour
 {
     [SerializeField] Color[] colors;
@@ -38,11 +41,17 @@ public class JColorFaderUI : MonoBehaviour
         image.color = Color.Lerp(startColor, endColor, t);
     }
 
+    /// <summary>
+    /// Pauses the color fading.
+    /// </summary>
     public void Pause()
     {
         shouldFade = false;
     }
 
+    /// <summary>
+    /// Resumes the color fading.
+    /// </summary>
     public void Resume()
     {
         shouldFade = true;
