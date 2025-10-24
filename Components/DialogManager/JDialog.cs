@@ -23,16 +23,26 @@ public abstract class JDialog : MonoBehaviour
 
     public void Init(string title, string message, Action onConfirm, Action onCancel = null)
     {
-        dialogTitle.text = title;
-        dialogMessage.text = message;
+        if (dialogTitle != null)
+        {
+            dialogTitle.text = title;
+        }
+
+        if (dialogMessage != null)
+        {
+            dialogMessage.text = message;
+        }
 
         this.onConfirm = onConfirm;
         this.onCancel = onCancel;
 
-        ConfirmButton.onClick.AddListener(() =>
+        if (ConfirmButton)
         {
-            OnConfirmClicked();
-        });
+            ConfirmButton.onClick.AddListener(() =>
+            {
+                OnConfirmClicked();
+            });
+        }
 
         if (CancelButton)
         {
