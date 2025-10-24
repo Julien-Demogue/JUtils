@@ -15,13 +15,11 @@ public abstract class JDialog : MonoBehaviour
 
     [SerializeField] protected TextMeshProUGUI dialogTitle;
     [SerializeField] protected TextMeshProUGUI dialogMessage;
-    [SerializeField] public Button ConfirmButton;
-    [SerializeField] public Button CancelButton; // Optional cancel button
 
     private Action onConfirm;
     private Action onCancel;
 
-    public void Init(string title, string message, Action onConfirm, Action onCancel = null)
+    private void Init(string title, string message, Action onConfirm = null, Action onCancel = null)
     {
         if (dialogTitle != null)
         {
@@ -35,31 +33,15 @@ public abstract class JDialog : MonoBehaviour
 
         this.onConfirm = onConfirm;
         this.onCancel = onCancel;
-
-        if (ConfirmButton)
-        {
-            ConfirmButton.onClick.AddListener(() =>
-            {
-                OnConfirmClicked();
-            });
-        }
-
-        if (CancelButton)
-        {
-            CancelButton.onClick.AddListener(() =>
-            {
-                OnCancelClicked();
-            });
-        }
     }
 
-    private void OnConfirmClicked()
+    public void OnClickConfirm()
     {
         onConfirm?.Invoke();
         CloseCurrentDialog();
     }
 
-    private void OnCancelClicked()
+    public void OnClickCancel()
     {
         onCancel?.Invoke();
         CloseCurrentDialog();
