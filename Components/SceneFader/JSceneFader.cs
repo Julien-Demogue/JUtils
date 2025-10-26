@@ -71,6 +71,19 @@ public class JSceneFader : MonoBehaviour
     }
 
     /// <summary>
+    /// Fades to a new scene with fade-in and fade-out effects.
+    /// </summary>
+    /// <param name="sceneBuildIndex"></param>
+    public void FateToScene(int sceneBuildIndex)
+    {
+        fadeEffect.FadeIn(() =>
+        {
+            SceneManager.LoadScene(sceneBuildIndex);
+            fadeEffect.FadeOut();
+        });
+    }
+
+    /// <summary>
     /// Stops any ongoing fade effect.
     /// </summary>
     /// <param name="onFadeStop"></param>
