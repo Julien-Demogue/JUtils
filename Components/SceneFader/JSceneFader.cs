@@ -74,7 +74,7 @@ public class JSceneFader : MonoBehaviour
     /// Fades to a new scene with fade-in and fade-out effects.
     /// </summary>
     /// <param name="sceneBuildIndex"></param>
-    public void FateToScene(int sceneBuildIndex)
+    public void FadeToScene(int sceneBuildIndex)
     {
         fadeEffect.FadeIn(() =>
         {
