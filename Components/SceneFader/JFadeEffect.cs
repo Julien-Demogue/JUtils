@@ -10,11 +10,13 @@ public abstract class JFadeEffect : MonoBehaviour
     {
         NONE,
         FADING_IN,
-        FADING_OUT
+        FADING_OUT,
+        IDLE
     }
 
     [SerializeField] protected float fadeInDuration = 1f;
     [SerializeField] protected float fadeOutDuration = 1f;
+    [SerializeField] protected float idleDuration = 0.5f;
     protected float fadeTimer = 0f;
     protected FadeState currentFadeState = FadeState.NONE;
 
@@ -25,11 +27,11 @@ public abstract class JFadeEffect : MonoBehaviour
     {
         if (currentFadeState == FadeState.NONE) return;
 
-        fadeTimer += Time.deltaTime;
-        FadeAnimation();
         switch (currentFadeState)
         {
             case FadeState.FADING_IN:
+                fadeTimer += Time.deltaTime;
+                FadeAnimation();
                 if (fadeTimer >= fadeInDuration)
                 {
                     currentFadeState = FadeState.NONE;
@@ -37,10 +39,20 @@ public abstract class JFadeEffect : MonoBehaviour
                 }
                 break;
             case FadeState.FADING_OUT:
+                fadeTimer += Time.deltaTime;
+                FadeAnimation();
                 if (fadeTimer >= fadeOutDuration)
                 {
                     currentFadeState = FadeState.NONE;
                     onFadeOutComplete?.Invoke();
+                }
+                break;
+            case FadeState.IDLE:
+                fadeTimer += Time.deltaTime;
+                if (fadeTimer >= idleDuration)
+                {
+                    fadeTimer = 0f;
+                    currentFadeState = FadeState.FADING_OUT;
                 }
                 break;
         }
@@ -57,6 +69,7 @@ public abstract class JFadeEffect : MonoBehaviour
         currentFadeState = FadeState.FADING_IN;
         fadeTimer = 0f;
         this.onFadeInComplete = onFadeInComplete;
+        this.onFadeOutComplete = null;
         OnFadeIn();
     }
 
@@ -66,10 +79,11 @@ public abstract class JFadeEffect : MonoBehaviour
     /// <param name="onFadeOutComplete"></param>
     public void FadeOut(Action onFadeOutComplete = null)
     {
-        if (currentFadeState == FadeState.FADING_OUT) return;
+        if (currentFadeState == FadeState.FADING_OUT || currentFadeState == FadeState.IDLE) return;
 
-        currentFadeState = FadeState.FADING_OUT;
+        currentFadeState = FadeState.IDLE;
         fadeTimer = 0f;
+        this.onFadeInComplete = null;
         this.onFadeOutComplete = onFadeOutComplete;
         OnFadeOut();
     }
