@@ -4,7 +4,10 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Singleton component to manage scene fading using a specified fade effect.
+/// Attach this script to a GameObject with a Canvas component with a high sorting order.
+/// Add the desired FadeEffect as a child of this GameObject.
 /// </summary>
+[RequireComponent(typeof(Canvas), typeof(CanvasScaler))]
 public class JSceneFader : MonoBehaviour
 {
     [SerializeField] private bool isPersistent = true;
