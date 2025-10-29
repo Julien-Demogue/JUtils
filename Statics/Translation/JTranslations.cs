@@ -37,6 +37,7 @@ public class JTranslations
     public static event Action OnLanguageChanged;
 
     private static Dictionary<string, Dictionary<Language, string>> translations = new();
+    private static Dictionary<string, string[]> translationVariables = new();
 
     /// <summary>
     /// Fetches translations from the Google Sheets URL and saves them to a CSV file.
@@ -153,12 +154,27 @@ public class JTranslations
         {
             if (langDict.TryGetValue(currentLanguage, out var translation))
             {
+                if (varValues != null && varValues.Length > 0)
+                {
+                    // Store variable values for future reference
+                    translationVariables.TryAdd(key, varValues);
+                }
+                else
+                {
+                    // Try to get previously stored variable values
+                    if (translationVariables.TryGetValue(key, out string[]? value))
+                    {
+                        varValues = value;
+                    }
+                }
+
                 // Replace variable identifiers with provided values
                 for (int i = 0; i < varValues.Length; i++)
                 {
                     string varIdentifier = VAR_IDENTIFIER.Replace("x", i.ToString());
                     translation = translation.Replace(varIdentifier, varValues[i], StringComparison.Ordinal);
                 }
+
                 return translation;
             }
             else
