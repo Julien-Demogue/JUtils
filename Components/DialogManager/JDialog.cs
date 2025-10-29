@@ -103,13 +103,6 @@ public abstract class JDialog : MonoBehaviour
         {
             currentDialog.OnClose();
 
-            // Remove listeners to prevent memory leaks
-            currentDialog.ConfirmButton.onClick.RemoveAllListeners();
-            if (currentDialog.CancelButton)
-            {
-                currentDialog.CancelButton.onClick.RemoveAllListeners();
-            }
-
             Destroy(currentDialog.gameObject);
             currentDialog = null;
 
