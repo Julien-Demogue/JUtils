@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ using UnityEngine;
 /// <item><description>Publish this Google Sheet to the web using the "tab-separated values" format.</description></item>
 /// <item><description>Update the GOOGLE_SHEET_URL.</description></item>
 /// </list>
+/// You can add parameters in your translations using the {0}, {1}, ... format.
+/// Example: "You have {0} new messages and {1} friend requests."
 /// </summary>
 public class JTranslations
 {
@@ -28,6 +31,7 @@ public class JTranslations
     private const string LANG_FOLDER_PATH = "Assets/Language";
     private const string LANG_FILE_NAME = "translations.csv";
     private const string CSV_SEPARATOR = "\t"; // Tab-separated values
+    private const string VAR_IDENTIFIER = "{x}";
 
     private static Language currentLanguage = Language.FR; // Default language
     public static event Action OnLanguageChanged;
@@ -59,8 +63,8 @@ public class JTranslations
 
         // Save the csv file to the specified path
         string filePath = GetTranslationFilePath();
-        System.IO.Directory.CreateDirectory(LANG_FOLDER_PATH);
-        System.IO.File.WriteAllText(filePath, csvText);
+        Directory.CreateDirectory(LANG_FOLDER_PATH);
+        File.WriteAllText(filePath, csvText);
         JDebug.LogGreen($"Translations saved to {filePath}");
         return true;
     }
@@ -71,14 +75,14 @@ public class JTranslations
         translations.Clear();
 
         string filePath = GetTranslationFilePath();
-        if (!System.IO.File.Exists(filePath))
+        if (!File.Exists(filePath))
         {
             Debug.LogError($"Translation file not found at {filePath}");
             return;
         }
 
         // Read the CSV file
-        string[] lines = System.IO.File.ReadAllLines(filePath);
+        string[] lines = File.ReadAllLines(filePath);
         if (lines.Length <= 1 || string.IsNullOrWhiteSpace(lines[0]))
         {
             Debug.LogError("Translation file is empty or has no valid data.");
@@ -123,8 +127,9 @@ public class JTranslations
     /// Gets the translation for a given key in the current language.
     /// </summary>
     /// <param name="key">The key for the translation.</param>
+    /// <param name="varValues">Optional variable values to replace in the translation string.</param>
     /// <returns>The translated string if found, otherwise returns the key.</returns>
-    public static string Get(string key)
+    public static string Get(string key, params string[] varValues)
     {
         if (string.IsNullOrEmpty(key))
         {
@@ -148,6 +153,12 @@ public class JTranslations
         {
             if (langDict.TryGetValue(currentLanguage, out var translation))
             {
+                // Replace variable identifiers with provided values
+                for (int i = 0; i < varValues.Length; i++)
+                {
+                    string varIdentifier = VAR_IDENTIFIER.Replace("x", i.ToString());
+                    translation = translation.Replace(varIdentifier, varValues[i], StringComparison.Ordinal);
+                }
                 return translation;
             }
             else
