@@ -110,7 +110,7 @@ public class JUtilsMenu
         EditorUtility.DisplayDialog("Translations", message, "OK");
     }
 
-    [MenuItem("DIY/Translations/Convert Selected to JLocalizedText")]
+    [MenuItem("JUtils/Translations/Convert Selected to JLocalizedText")]
     public static void ConvertSelectedToJLocalizedText()
     {
         GameObject[] selectedObjects = Selection.gameObjects;
@@ -139,7 +139,7 @@ public class JUtilsMenu
             $"Converted {convertedCount} TextMeshProUGUI component(s) to JLocalizedText.", "OK");
     }
 
-    [MenuItem("DIY/Translations/Convert All in Scene to JLocalizedText")]
+    [MenuItem("JUtils/Translations/Convert All in Scene to JLocalizedText")]
     public static void ConvertAllInSceneToJLocalizedText()
     {
         if (!EditorUtility.DisplayDialog("Convert All in Scene",
@@ -166,7 +166,7 @@ public class JUtilsMenu
             $"Converted {convertedCount} TextMeshProUGUI component(s) to JLocalizedText in the active scene.", "OK");
     }
 
-    [MenuItem("DIY/Translations/Convert All Prefabs to JLocalizedText")]
+    [MenuItem("JUtils/Translations/Convert All Prefabs to JLocalizedText")]
     public static void ConvertAllPrefabsToJLocalizedText()
     {
         if (!EditorUtility.DisplayDialog("Convert All Prefabs",
