@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
-/// JTranslations manages the retrieval, storage, and access to multilingual translations for your Unity application.
-/// <para>Usage:</para>
+/// Manages the retrieval, storage, and access to multilingual translations for your Unity application.
+/// <para>Setup:</para>
 /// <list type="bullet">
-/// <item><description>Create a Google Sheet with the following columns: KEY, EN, FR, etc.</description></item>
-/// <item><description>You can add more languages by extending the language enum and updating the PopulateDictionary() method.</description></item>
-/// <item><description>Publish this Google Sheet to the web using the "tab-separated values" format.</description></item>
-/// <item><description>Update the GOOGLE_SHEET_URL.</description></item>
+/// <item><description>Create a Google Sheet with columns: KEY, EN, FR, etc.</description></item>
+/// <item><description>Add languages by extending the Language enum and updating PopulateDictionary().</description></item>
+/// <item><description>Publish the Google Sheet to the web as "tab-separated values".</description></item>
+/// <item><description>Update GOOGLE_SHEET_URL with your published sheet URL.</description></item>
 /// </list>
-/// You can add parameters in your translations using the {0}, {1}, ... format.
-/// Example: "You have {0} new messages and {1} friend requests."
+/// <para>Features:</para>
+/// <list type="bullet">
+/// <item><description>Parameters: Use {0}, {1}, etc. in translations (e.g., "You have {0} new messages").</description></item>
+/// <item><description>Sections: Lines starting with # in the CSV are ignored (useful for organizing translations).</description></item>
+/// </list>
 /// </summary>
 public class JTranslations
 {
@@ -107,13 +110,19 @@ public class JTranslations
             }
 
             string[] values = line.Split(CSV_SEPARATOR);
+
+            string key = values[0].Trim();
+
+            if (key.StartsWith("#"))
+            {
+                continue;
+            }
+
             if (values.Length != headers.Length)
             {
                 Debug.LogWarning($"Line {i + 1} in translation file has a different number of columns than the header: {line}");
                 continue;
             }
-
-            string key = values[0].Trim();
 
             translations[key] = new Dictionary<Language, string>()
                 {
