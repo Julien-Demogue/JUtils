@@ -35,6 +35,7 @@ public class JTranslations
     private const string LANG_FILE_NAME = "translations.csv";
     private const string CSV_SEPARATOR = "\t"; // Tab-separated values
     private const string VAR_IDENTIFIER = "{x}";
+    private const string SECTION_IDENTIFIER = "#";
 
     private static Language currentLanguage = Language.FR; // Default language
     public static event Action OnLanguageChanged;
@@ -113,7 +114,7 @@ public class JTranslations
 
             string key = values[0].Trim();
 
-            if (key.StartsWith("#"))
+            if (key.StartsWith(SECTION_IDENTIFIER))
             {
                 continue;
             }
