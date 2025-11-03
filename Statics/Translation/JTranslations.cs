@@ -71,6 +71,9 @@ public class JTranslations
         Directory.CreateDirectory(LANG_FOLDER_PATH);
         File.WriteAllText(filePath, csvText);
         JDebug.LogGreen($"Translations saved to {filePath}");
+
+        PopulateDictionary();
+
         return true;
     }
 
