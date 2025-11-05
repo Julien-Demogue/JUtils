@@ -84,13 +84,6 @@ public class JUtilsMenu
         }
     }
 
-    [MenuItem("JUtils/Audio/Compile audio elements")]
-    public static void CompileAudioItemsMenu()
-    {
-        JAudioEditor.CompileAudioItems();
-        EditorUtility.DisplayDialog("Audio Compilation", "Audio items compiled successfully.", "OK");
-    }
-
     [MenuItem("JUtils/Audio/Refresh Audio Settings")]
     public static void RefreshAudioSettingsMenu()
     {
