@@ -175,7 +175,7 @@ public class JTranslations
                 else
                 {
                     // Try to get previously stored variable values
-                    if (translationVariables.TryGetValue(key, out string[]? value))
+                    if (translationVariables.TryGetValue(key, out string[] value))
                     {
                         varValues = value;
                     }

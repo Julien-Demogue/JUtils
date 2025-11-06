@@ -12,14 +12,14 @@ public class JAudioItems : ScriptableObject
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(AudioItems))]
-public class AudioItemsEditor : Editor
+[CustomEditor(typeof(JAudioItems))]
+public class JAudioItemsEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        AudioItems audioItems = (AudioItems)target;
+        JAudioItems audioItems = (JAudioItems)target;
 
         GUILayout.Space(10);
         if (GUILayout.Button("Fill Audio Items"))
@@ -28,27 +28,27 @@ public class AudioItemsEditor : Editor
         }
     }
 
-    private void FillAudioItems(AudioItems audioItems)
+    private void FillAudioItems(JAudioItems audioItems)
     {
         const string audioItemsFolderPath = "Assets/Audio";
 
         string[] assetPaths = AssetDatabase.FindAssets("t:ScriptableObject", new[] { audioItemsFolderPath });
 
-        audioItems.items.Clear();
+        audioItems.Items.Clear();
         foreach (string guid in assetPaths)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            AudioItem obj = AssetDatabase.LoadAssetAtPath<AudioItem>(assetPath);
+            JAudioItem obj = AssetDatabase.LoadAssetAtPath<JAudioItem>(assetPath);
             if (obj != null)
             {
-                audioItems.items.Add(obj);
+                audioItems.Items.Add(obj);
             }
         }
 
         EditorUtility.SetDirty(audioItems);
         AssetDatabase.SaveAssets();
 
-        JDebug.LogGreen($"Audio items filled! {audioItems.items.Count} items added.");
+        JDebug.LogGreen($"Audio items filled! {audioItems.Items.Count} items added.");
     }
 }
 #endif
