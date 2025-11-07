@@ -14,12 +14,12 @@ public class JScaleSelectEffect : JSelectEffect
         defaultScale = transform.localScale;
     }
 
-    public override void OnSelect(BaseEventData eventData)
+    public override void OnEffectSelected()
     {
         transform.localScale = defaultScale * (1 + scaleMultiplier);
     }
 
-    public override void OnDeselect(BaseEventData eventData)
+    public override void OnEffectDeselected()
     {
         transform.localScale = defaultScale;
     }

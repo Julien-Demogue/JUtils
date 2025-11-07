@@ -10,17 +10,14 @@ public class JOutlineSelectEffect : JSelectEffect
     {
         base.Awake();
         outline = GetComponent<UnityEngine.UI.Outline>();
-    }
 
-    private void Start()
-    {
         if (outline && EventSystem.current.currentSelectedGameObject != this.gameObject)
         {
             outline.enabled = false;
         }
     }
 
-    public override void OnSelect(BaseEventData eventData)
+    public override void OnEffectSelected()
     {
         if (outline)
         {
@@ -28,7 +25,7 @@ public class JOutlineSelectEffect : JSelectEffect
         }
     }
 
-    public override void OnDeselect(BaseEventData eventData)
+    public override void OnEffectDeselected()
     {
         if (outline)
         {

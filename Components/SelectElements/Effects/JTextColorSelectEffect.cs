@@ -17,7 +17,7 @@ public class JTextColorSelectEffect : JSelectEffect
         }
     }
 
-    public override void OnSelect(BaseEventData eventData)
+    public override void OnEffectSelected()
     {
         if (buttonText)
         {
@@ -25,7 +25,7 @@ public class JTextColorSelectEffect : JSelectEffect
         }
     }
 
-    public override void OnDeselect(BaseEventData eventData)
+    public override void OnEffectDeselected()
     {
         if (buttonText)
         {

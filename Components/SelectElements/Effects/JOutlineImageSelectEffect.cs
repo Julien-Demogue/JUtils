@@ -11,17 +11,14 @@ public class JOutlineImageSelectEffect : JSelectEffect
     {
         base.Awake();
         outlineImage = GetComponent<Image>();
-    }
 
-    private void Start()
-    {
         if (outlineImage && EventSystem.current.currentSelectedGameObject != this.gameObject)
         {
             outlineImage.enabled = false;
         }
     }
 
-    public override void OnSelect(BaseEventData eventData)
+    public override void OnEffectSelected()
     {
         if (outlineImage)
         {
@@ -29,7 +26,7 @@ public class JOutlineImageSelectEffect : JSelectEffect
         }
     }
 
-    public override void OnDeselect(BaseEventData eventData)
+    public override void OnEffectDeselected()
     {
         if (outlineImage)
         {

@@ -6,7 +6,7 @@ public class JTextUnderlineSelectEffect : JSelectEffect
 {
     [SerializeField] private TextMeshProUGUI buttonText;
 
-    public override void OnSelect(BaseEventData eventData)
+    public override void OnEffectSelected()
     {
         if (buttonText && !buttonText.text.Contains("<u>"))
         {
@@ -14,7 +14,7 @@ public class JTextUnderlineSelectEffect : JSelectEffect
         }
     }
 
-    public override void OnDeselect(BaseEventData eventData)
+    public override void OnEffectDeselected()
     {
         if (buttonText)
         {
