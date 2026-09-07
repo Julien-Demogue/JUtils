@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// A component that makes an object float up and down.
+/// </summary>
 public class JFloating : MonoBehaviour
 {
     public float Height = 0.5f;
