@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Shakes the camera to create a dynamic effect.
 /// </summary>
+[RequireComponent(typeof(Camera))]
 public class JCameraShaker : MonoBehaviour
 {
     private enum ShakeState
@@ -12,13 +13,28 @@ public class JCameraShaker : MonoBehaviour
         Shaking
     }
 
-    [SerializeField] private Camera cam;
+    private Camera cam;
 
     private float duration = 0f;
     private float magnitude = 0.1f;
     private ShakeState currentState = ShakeState.Idle;
 
     private Vector3 originalPosition;
+
+    public static JCameraShaker Instance { get; private set; }
+
+    private void Awake()
+    {
+        cam = GetComponent<Camera>();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
