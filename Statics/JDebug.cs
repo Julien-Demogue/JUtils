@@ -3,9 +3,23 @@ using UnityEngine;
 /// <summary>
 /// JDebug provides utility methods to display colored messages in the Unity console.
 /// Also allows saving game logs and errors to files via JFileSystem.
+/// Also includes a debug mode toggle for additional logging during development.
 /// </summary>
 public static class JDebug
 {
+    public static bool IsDebugMode { get; private set; } = false;
+
+    /// <summary>
+    /// Toggles the debug mode on or off.
+    /// </summary>
+    public static void ToggleDebugMode()
+    {
+#if UNITY_EDITOR
+        IsDebugMode = !IsDebugMode;
+        LogYellow($"Debug mode set to: {IsDebugMode}");
+#endif
+    }
+
     // ----------------------------------------------------------------------------------------------
 
     /// <summary>
@@ -22,7 +36,10 @@ public static class JDebug
 
         if (shouldLog)
         {
-            SaveGameLog(message);
+            if (IsDebugMode)
+            {
+                SaveGameLog(message);
+            }
         }
     }
 
