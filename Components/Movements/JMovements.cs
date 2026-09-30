@@ -27,12 +27,9 @@ public abstract class JMovements : MonoBehaviour
     }
 
     /// <summary>
-    /// Transforms the movement vector from local space to world space.
-    /// </summary>
-    /// <returns></returns> <summary>
     /// Gets the horizontal movement vector based on player input and speed modifiers.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The horizontal movement vector.</returns>
     private Vector3 GetHorizontalMovement()
     {
         Vector2 direction = playerInput.Direction;
@@ -53,7 +50,7 @@ public abstract class JMovements : MonoBehaviour
     /// <summary>
     /// Calculates the vertical speed based on gravity, jump input, and whether the character is grounded.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The vertical speed.</returns>
     private float GetVerticalSpeed()
     {
         if (characterController.isGrounded && verticalSpeed < 0f)
@@ -70,6 +67,6 @@ public abstract class JMovements : MonoBehaviour
     /// Transforms the movement vector from local space to world space.
     /// </summary>
     /// <param name="movements"></param>
-    /// <returns></returns>
+    /// <returns>The movement vector in world space.</returns>
     protected abstract Vector3 ToWorld(Vector3 movements);
 }

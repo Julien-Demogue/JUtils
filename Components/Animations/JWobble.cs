@@ -4,7 +4,7 @@ using UnityEngine;
 /// A component that makes an object wobble.
 /// </summary>
 [RequireComponent(typeof(Renderer))]
-public class Wobble : MonoBehaviour
+public class JWobble : MonoBehaviour
 {
     [SerializeField]
     private float recovery = 2f;

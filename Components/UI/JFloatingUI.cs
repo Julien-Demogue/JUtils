@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// A component that makes a UI element float up and down.
 /// </summary>
-public class FloatingUI : MonoBehaviour
+public class JFloatingUI : MonoBehaviour
 {
     [SerializeField] private float amplitude = 5f;
     [SerializeField] private float speed = 5f;
