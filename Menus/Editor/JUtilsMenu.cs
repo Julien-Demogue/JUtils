@@ -142,7 +142,7 @@ public class JUtilsMenu
             return;
         }
 
-        TextMeshProUGUI[] allTMP = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        TextMeshProUGUI[] allTMP = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include);
         int convertedCount = 0;
 
         foreach (TextMeshProUGUI tmp in allTMP)

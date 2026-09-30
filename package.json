@@ -1,9 +1,9 @@
 {
   "name": "com.juliendemogue.jutils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "JUtils",
   "description": "Utility library to simplify and accelerate Unity project development.",
-  "unity": "6000.0",
+  "unity": "6000.4",
   "author": {
     "name": "Julien Demogue",
     "url": "https://github.com/Julien-Demogue"
