@@ -230,4 +230,19 @@ public class JTranslations
     {
         return $"{LANG_FOLDER_PATH}/{LANG_FILE_NAME}";
     }
+
+    /// <summary>
+    /// Checks if a key exists in the translations.
+    /// </summary>
+    /// <param name="key">The key to check.</param>
+    /// <returns>Returns true if the key exists, otherwise false.</returns>
+    public static bool DoesKeyExist(string key)
+    {
+        if (!AreTranslationsLoaded())
+        {
+            PopulateDictionary();
+        }
+
+        return translations.ContainsKey(key);
+    }
 }

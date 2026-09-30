@@ -8,10 +8,10 @@ using UnityEngine.UI;
 /// JDialog is a base class for creating dialog windows in Unity.
 /// It provides functionality to show and manage dialogs with confirm and cancel actions.
 /// </summary>
-public abstract class JDialog : MonoBehaviour
+public abstract class JInfoDialog : MonoBehaviour
 {
-    private static Queue<JDialog> dialogQueue = new();
-    private static JDialog currentDialog;
+    private static Queue<JInfoDialog> dialogQueue = new();
+    private static JInfoDialog currentDialog;
 
     [SerializeField] protected TextMeshProUGUI dialogTitle;
     [SerializeField] protected TextMeshProUGUI dialogMessage;
@@ -69,7 +69,7 @@ public abstract class JDialog : MonoBehaviour
     /// <param name="message">The message to display in the dialog.</param>
     /// <param name="onConfirm">Action to execute when the confirm button is clicked.</param>
     /// <param name="onCancel">Action to execute when the cancel button is clicked (optional).</param>
-    public static void ShowDialog(JDialog dialogPrefab, string title, string message, Action onConfirm, Action onCancel = null)
+    public static void ShowDialog(JInfoDialog dialogPrefab, string title, string message, Action onConfirm, Action onCancel = null)
     {
         if (dialogPrefab == null)
         {
@@ -79,7 +79,7 @@ public abstract class JDialog : MonoBehaviour
 
         bool isFirstDialog = currentDialog == null;
 
-        JDialog newDialog = Instantiate(dialogPrefab);
+        JInfoDialog newDialog = Instantiate(dialogPrefab);
         newDialog.Init(title, message, onConfirm, onCancel);
         newDialog.gameObject.SetActive(isFirstDialog);
 
