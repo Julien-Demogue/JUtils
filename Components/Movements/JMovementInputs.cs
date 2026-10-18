@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class JPlayerInput : MonoBehaviour
+[Serializable]
+public class JMovementInputs
 {
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
@@ -9,7 +11,7 @@ public class JPlayerInput : MonoBehaviour
     [SerializeField] private InputActionReference runAction;
     [SerializeField] private InputActionReference crouchAction;
 
-    void OnEnable()
+    private void OnEnable()
     {
         EnableAction(moveAction);
         EnableAction(lookAction);

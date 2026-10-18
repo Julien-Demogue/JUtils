@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(JPlayerInput), typeof(CharacterController))]
 public class JFPSMovements : JMovements
 {
     public float MouseSensitivity = 10f;
@@ -18,14 +17,14 @@ public class JFPSMovements : JMovements
     protected override void Update()
     {
         base.Update();
-        Look(playerInput.Look);
+        Look(PlayerInputs.Look);
     }
 
     protected override Vector3 ToWorld(Vector3 movement) => transform.TransformDirection(movement);
 
     private void Look(Vector2 look)
     {
-        Vector2 rotation = playerInput.LookFromPointer
+        Vector2 rotation = PlayerInputs.LookFromPointer
         ? look * MouseSensitivity
         : look * GamepadSensitivity * Time.deltaTime;
 

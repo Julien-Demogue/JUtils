@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(JPlayerInput), typeof(CharacterController))]
 public abstract class JMovements : MonoBehaviour
 {
     public float Speed = 10f;
@@ -9,13 +8,13 @@ public abstract class JMovements : MonoBehaviour
     public float RunSpeedMultiplier = 1.5f;
     [Range(0f, 1f)] public float CrouchSpeedReduction = 0.5f;
 
-    protected JPlayerInput playerInput;
+    public JMovementInputs PlayerInputs = new();
+
     protected CharacterController characterController;
     private float verticalSpeed;
 
     protected virtual void Awake()
     {
-        playerInput = GetComponent<JPlayerInput>();
         characterController = GetComponent<CharacterController>();
     }
 
@@ -32,14 +31,14 @@ public abstract class JMovements : MonoBehaviour
     /// <returns>The horizontal movement vector.</returns>
     private Vector3 GetHorizontalMovement()
     {
-        Vector2 direction = playerInput.Direction;
+        Vector2 direction = PlayerInputs.Direction;
         Vector3 movement = new Vector3(direction.x, 0f, direction.y) * Speed * Time.deltaTime;
 
-        if (playerInput.Crouch)
+        if (PlayerInputs.Crouch)
         {
             movement *= CrouchSpeedReduction;
         }
-        else if (playerInput.Run)
+        else if (PlayerInputs.Run)
         {
             movement *= RunSpeedMultiplier;
         }
@@ -56,7 +55,7 @@ public abstract class JMovements : MonoBehaviour
         if (characterController.isGrounded && verticalSpeed < 0f)
             verticalSpeed = -2f;
 
-        if (characterController.isGrounded && playerInput.Jump)
+        if (characterController.isGrounded && PlayerInputs.Jump)
             verticalSpeed = JumpForce;
 
         verticalSpeed += Gravity * Time.deltaTime;
