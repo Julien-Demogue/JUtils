@@ -8,10 +8,11 @@ using UnityEngine;
 /// Manages the retrieval, storage, and access to multilingual translations for your Unity application.
 /// <para>Setup:</para>
 /// <list type="bullet">
+/// <item><description>Create a JTranslationConfig ScriptableObject asset and place it in a Resources folder.</description></item>
 /// <item><description>Create a Google Sheet with columns: KEY, EN, FR, etc.</description></item>
 /// <item><description>Add languages by extending the Language enum and updating PopulateDictionary().</description></item>
 /// <item><description>Publish the Google Sheet to the web as "tab-separated values".</description></item>
-/// <item><description>Update GOOGLE_SHEET_URL with your published sheet URL.</description></item>
+/// <item><description>Update the config asset with your published sheet URL.</description></item>
 /// </list>
 /// <para>Features:</para>
 /// <list type="bullet">
@@ -29,10 +30,8 @@ public class JTranslations
         FR,
     }
 
-    // This url is used to access Google Sheet for translations.
-    private const string GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQxoEx0UUcTGg9wHUA4pGMfHzLsFg9Y5jpVTbxJUdd7VPCG-xMTcdX21AtM9RVkHfkUZTsLeEVX7DZ/pub?gid=0&single=true&output=tsv";
-    private const string LANG_FOLDER_PATH = "Assets/Language";
-    private const string LANG_FILE_NAME = "translations.csv";
+    private static JTranslationConfig translationConfig;
+
     private const string CSV_SEPARATOR = "\t"; // Tab-separated values
     private const string VAR_IDENTIFIER = "{x}";
     private const string SECTION_IDENTIFIER = "#";
@@ -44,13 +43,38 @@ public class JTranslations
     private static Dictionary<string, string[]> translationVariables = new();
 
     /// <summary>
+    /// Gets the translation configuration from the Resources folder.
+    /// </summary>
+    private static JTranslationConfig TranslationConfig
+    {
+        get
+        {
+            if (translationConfig == null)
+            {
+                translationConfig = Resources.Load<JTranslationConfig>("JTranslationConfig");
+                if (translationConfig == null)
+                {
+                    Debug.LogError("JTranslationConfig asset not found in Resources folder.");
+                }
+            }
+            return translationConfig;
+        }
+    }
+
+    /// <summary>
     /// Fetches translations from the Google Sheets URL and saves them to a CSV file.
     /// </summary>
     /// <returns>Returns true if the fetch was successful, otherwise false.</returns>
     public static async Task<bool> FetchTranslations()
     {
+        if (TranslationConfig == null)
+        {
+            Debug.LogError("Translation configuration is not set.");
+            return false;
+        }
+
         // Send a web request to fetch the CSV file from Google Sheets
-        using var www = UnityEngine.Networking.UnityWebRequest.Get(GOOGLE_SHEET_URL);
+        using var www = UnityEngine.Networking.UnityWebRequest.Get(TranslationConfig.GoogleSheetUrl);
         var operation = www.SendWebRequest();
 
         while (!operation.isDone)
@@ -68,22 +92,30 @@ public class JTranslations
 
         // Save the csv file to the specified path
         string filePath = GetTranslationFilePath();
-        Directory.CreateDirectory(LANG_FOLDER_PATH);
+        if (string.IsNullOrEmpty(filePath)) return false;
+
+        Directory.CreateDirectory(TranslationConfig.LangFolderPath);
         File.WriteAllText(filePath, csvText);
-        JDebug.LogGreen($"Translations saved to {filePath}");
+        Debug.Log($"Translations saved to {filePath}");
 
         PopulateDictionary();
 
         return true;
     }
 
-    // Populate the dictionary with translations from the JSON file
+    // Populate the dictionary with translations from the CSV file
     private static void PopulateDictionary()
     {
+        if (TranslationConfig == null)
+        {
+            Debug.LogError("Translation configuration is not set.");
+            return;
+        }
+
         translations.Clear();
 
         string filePath = GetTranslationFilePath();
-        if (!File.Exists(filePath))
+        if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
         {
             Debug.LogError($"Translation file not found at {filePath}");
             return;
@@ -104,7 +136,7 @@ public class JTranslations
             return;
         }
 
-        // Parse the csv content and populate the translations dictionary   
+        // Parse the csv content and populate the translations dictionary  
         for (int i = 1; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
@@ -114,7 +146,6 @@ public class JTranslations
             }
 
             string[] values = line.Split(CSV_SEPARATOR);
-
             string key = values[0].Trim();
 
             if (key.StartsWith(SECTION_IDENTIFIER))
@@ -129,11 +160,11 @@ public class JTranslations
             }
 
             translations[key] = new Dictionary<Language, string>()
-                {
-                    // Should match the order of languages in the header
-                    { Language.EN, values[1].Trim() },
-                    { Language.FR, values[2].Trim() }
-                };
+            {
+                // Should match the order of languages in the header with bounds safety
+                { Language.EN, values.Length > 1 ? values[1].Trim() : string.Empty },
+                { Language.FR, values.Length > 2 ? values[2].Trim() : string.Empty }
+            };
         }
     }
 
@@ -145,6 +176,12 @@ public class JTranslations
     /// <returns>The translated string if found, otherwise returns the key.</returns>
     public static string Get(string key, params string[] varValues)
     {
+        if (TranslationConfig == null)
+        {
+            Debug.LogError("Translation configuration is not set.");
+            return key;
+        }
+
         if (string.IsNullOrEmpty(key))
         {
             Debug.LogWarning("Key is null or empty.");
@@ -181,11 +218,14 @@ public class JTranslations
                     }
                 }
 
-                // Replace variable identifiers with provided values
-                for (int i = 0; i < varValues.Length; i++)
+                if (varValues != null)
                 {
-                    string varIdentifier = VAR_IDENTIFIER.Replace("x", i.ToString());
-                    translation = translation.Replace(varIdentifier, varValues[i], StringComparison.Ordinal);
+                    // Replace variable identifiers with provided values
+                    for (int i = 0; i < varValues.Length; i++)
+                    {
+                        string varIdentifier = VAR_IDENTIFIER.Replace("x", i.ToString());
+                        translation = translation.Replace(varIdentifier, varValues[i], StringComparison.Ordinal);
+                    }
                 }
 
                 return translation;
@@ -224,11 +264,17 @@ public class JTranslations
 
     /// <summary>
     /// Gets the file path for the translation CSV file.
-    /// /// </summary>
+    /// </summary>
     /// <returns>The file path as a string.</returns>
     public static string GetTranslationFilePath()
     {
-        return $"{LANG_FOLDER_PATH}/{LANG_FILE_NAME}";
+        if (TranslationConfig == null)
+        {
+            Debug.LogError("Translation configuration is not set.");
+            return string.Empty;
+        }
+
+        return $"{TranslationConfig.LangFolderPath}/{TranslationConfig.LangFileName}";
     }
 
     /// <summary>

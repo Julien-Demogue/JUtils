@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// JAudioItems is a ScriptableObject that holds a list of JAudioItem objects.
 /// </summary>
-[CreateAssetMenu(fileName = "AudioItems", menuName = "Audio/Audio items")]
+[CreateAssetMenu(fileName = "AudioItems", menuName = "JUtils/Audio/Audio items")]
 public class JAudioItems : ScriptableObject
 {
     public List<JAudioItem> Items = new();

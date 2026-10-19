@@ -6,7 +6,7 @@ using System;
 /// <summary>
 /// JAudioItem is a ScriptableObject that represents an audio item in Unity.    
 /// </summary>
-[CreateAssetMenu(fileName = "AudioItem", menuName = "Audio/Audio item")]
+[CreateAssetMenu(fileName = "AudioItem", menuName = "JUtils/Audio/Audio item")]
 public class JAudioItem : ScriptableObject
 {
     [Header("General")]

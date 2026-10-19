@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// JSpatialSettingsPreset is a ScriptableObject that holds spatial audio settings.
 /// </summary>
-[CreateAssetMenu(fileName = "SpatialSettingsPreset", menuName = "Audio/Spatial Settings Preset")]
+[CreateAssetMenu(fileName = "SpatialSettingsPreset", menuName = "JUtils/Audio/Spatial Settings Preset")]
 public class JSpatialSettingsPreset : ScriptableObject
 {
     [Range(0f, 1f)] public float SpatialBlend;
