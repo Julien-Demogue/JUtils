@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class JDialogBox : MonoBehaviour
 {
@@ -12,14 +13,17 @@ public class JDialogBox : MonoBehaviour
     private int currentDialogIndex = 0;
     private bool isTyping = false;
     private Coroutine typingCoroutine = null;
+    private Action onDialogComplete;
 
     /// <summary>
     /// Shows the dialog box and starts displaying the dialog texts for the given dialogTextId.
     /// </summary>
     /// <param name="dialogTextId"></param>
-    public void ShowDialog(string dialogTextId)
+    /// <param name="onComplete"></param>
+    public void ShowDialog(string dialogTextId, Action onComplete = null)
     {
         gameObject.SetActive(true);
+        onDialogComplete = onComplete;
 
         FetchDialogTexts(dialogTextId);
 
@@ -69,7 +73,7 @@ public class JDialogBox : MonoBehaviour
     /// <param name="dialogText"></param>
     private void StartTyping(string dialogText)
     {
-        if(typingSpeed <= 0f)
+        if (typingSpeed <= 0f)
         {
             dialogTextField.text = dialogText;
             Debug.LogWarning("Typing speed is set to 0 or less. Displaying full text without typing effect.");
@@ -158,6 +162,7 @@ public class JDialogBox : MonoBehaviour
             }
 
             gameObject.SetActive(false);
+            onDialogComplete?.Invoke();
         }
     }
 }
