@@ -20,6 +20,18 @@ public static class JDebug
 #endif
     }
 
+    /// <summary>
+    /// Sets the debug mode to a specific value.
+    /// </summary>
+    /// <param name="isEnabled"></param>
+    public static void SetDebugMode(bool isEnabled)
+    {
+#if UNITY_EDITOR
+        IsDebugMode = isEnabled;
+        LogYellow($"Debug mode set to: {IsDebugMode}");
+#endif
+    }
+
     // ----------------------------------------------------------------------------------------------
 
     /// <summary>
