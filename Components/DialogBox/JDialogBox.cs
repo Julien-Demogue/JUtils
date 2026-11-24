@@ -1,19 +1,43 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using UnityEngine.InputSystem;
 
 public class JDialogBox : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI dialogTextField;
+    [SerializeField] private InputActionReference nextDialogInput;
     public float typingSpeed = 0.03f;
     private List<string> dialogTexts = new List<string>();
     private int currentDialogIndex = 0;
     private bool isTyping = false;
     private Coroutine typingCoroutine = null;
     private Action onDialogComplete;
+
+    private void OnEnable()
+    {
+        if (nextDialogInput != null)
+        {
+            nextDialogInput.action.Enable();
+            nextDialogInput.action.performed += OnNextDialogPerformed;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (nextDialogInput != null)
+        {
+            nextDialogInput.action.performed -= OnNextDialogPerformed;
+            nextDialogInput.action.Disable();
+        }
+    }
+
+    private void OnNextDialogPerformed(InputAction.CallbackContext context)
+    {
+        NextDialog();
+    }
 
     /// <summary>
     /// Shows the dialog box and starts displaying the dialog texts for the given dialogTextId.
